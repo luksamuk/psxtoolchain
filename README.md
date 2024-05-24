@@ -8,14 +8,17 @@ This repository contains the Dockerfile and instructions for building your own P
 
 I created this because I felt like the toolchain was somewhat directed to Windows users. I prefer doing things on Linux, or even, if I were using Windows, I'd still use WSL to develop my games.
 
+Please notice that **I am also not redistributing anything here that may cause copyright infringiment**. This image is composed of opensource software that can be freely installed on a Linux system with no extra effort, plus a few opensource projects that can be compiled from source with no problems. So you might need extra files for building your ISO, for example, which cannot be obtained on this Docker image.
+
 This Docker image definition contains:
 
-- The latest Ubuntu (currently 24.04 LTS Noble Numbat)
+- The latest Ubuntu (currently 24.04 LTS Noble Numbat);
 - A modern GCC-MIPSEL compiler;
+- GDB-Multiarch (if needed);
+- [armips assembler](https://github.com/Kingcom/armips), compiled from source;
 - [mkpsxiso](https://github.com/Lameguy64/mkpsxiso), compiled from source;
 - CMake, Make;
-- Git;
-- Bchunk (if needed).
+- Git.
 
 This project is also heavily inspired by the [psptoolchain](https://github.com/pspdev/psptoolchain).
 
@@ -55,7 +58,7 @@ For more info, please refer to ~mkpsxiso~ above.
 
 ## Building the image
 
-Here's how I build it using BuildX directly. Of course, you won't be able to push to ~luksamuk/psxtoolchain:latest~. :)
+Here's how I build it using BuildX directly. Of course, you won't be able to push to `luksamuk/psxtoolchain:latest`. :)
 
 ```bash
 docker buildx build . -t luksamuk/psxtoolchain:latest --push
