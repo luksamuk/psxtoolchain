@@ -12,12 +12,13 @@ Please notice that **I am also not redistributing anything here that may cause c
 
 This Docker image definition contains:
 
-- The latest Ubuntu (currently 24.04 LTS Noble Numbat);
+- Ubuntu 24.04 LTS Noble Numbat;
 - A modern GCC-MIPSEL compiler;
 - GDB-Multiarch (if needed);
 - [armips assembler](https://github.com/Kingcom/armips), compiled from source;
 - [mkpsxiso](https://github.com/Lameguy64/mkpsxiso), compiled from source;
 - CMake, Make;
+- [TIMedit](https://github.com/alex-free/TIMedit), more precisely, a Linux fork, compiled from source;
 - Git.
 
 This project is also heavily inspired by the [psptoolchain](https://github.com/pspdev/psptoolchain).
@@ -55,6 +56,20 @@ docker run -it --rm \
 ```
 
 For more info, please refer to ~mkpsxiso~ above.
+
+### Running TIMedit
+
+TIMedit is a graphical tool for Linux. So it needs you to define the ~DISPLAY~ variable and mount your `/tmp/.X11-unix` directory. You can run it like this:
+
+```bash
+docker run -it --rm \
+    -e DISPLAY=${DISPLAY} \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $(pwd):/source \
+    -w /source \
+    luksamuk/psxtoolchain:latest \
+    timedit
+```
 
 ## Building the image
 
