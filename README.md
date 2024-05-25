@@ -15,11 +15,12 @@ This Docker image definition contains:
 - Ubuntu 24.04 LTS Noble Numbat;
 - A modern GCC-MIPSEL compiler;
 - GDB-Multiarch (if needed);
+- CMake, Make;
+- Git;
 - [armips assembler](https://github.com/Kingcom/armips), compiled from source;
 - [mkpsxiso](https://github.com/Lameguy64/mkpsxiso), compiled from source;
-- CMake, Make;
 - [TIMedit](https://github.com/alex-free/TIMedit), more precisely, a Linux fork, compiled from source;
-- Git.
+- [smxtool](https://github.com/Lameguy64/smxtool), a model viewer and material editor.
 
 This project is also heavily inspired by the [psptoolchain](https://github.com/pspdev/psptoolchain).
 
@@ -59,16 +60,20 @@ For more info, please refer to ~mkpsxiso~ above.
 
 ### Running TIMedit
 
-TIMedit is a graphical tool for Linux. So it needs you to define the ~DISPLAY~ variable and mount your `/tmp/.X11-unix` directory. You can run it like this:
+Some tools are GUI tools for Linux. So you might need extra configuration to give it access to a running X11 session.
+
+Here is an example running ~smxtool~:
 
 ```bash
 docker run -it --rm \
     -e DISPLAY=${DISPLAY} \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v ~/.Xauthority:/root/.Xauthority \
     -v $(pwd):/source \
     -w /source \
+    --net=host \
     luksamuk/psxtoolchain:latest \
-    timedit
+    smxtool
 ```
 
 ## Building the image
