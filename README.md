@@ -12,13 +12,16 @@ Please notice that **I am also not redistributing anything here that may cause c
 
 This Docker image definition contains:
 
-- The latest Ubuntu (currently 24.04 LTS Noble Numbat);
+- Ubuntu 24.04 LTS Noble Numbat;
 - A modern GCC-MIPSEL compiler;
 - GDB-Multiarch (if needed);
+- CMake, Make;
+- Git;
 - [armips assembler](https://github.com/Kingcom/armips), compiled from source;
 - [mkpsxiso](https://github.com/Lameguy64/mkpsxiso), compiled from source;
-- CMake, Make;
-- Git.
+- [TIMedit](https://github.com/alex-free/TIMedit), more precisely, a Linux fork (with an extra patch to avoid segfaults), compiled from source;
+- [smxtool](https://github.com/Lameguy64/smxtool), a model viewer and material editor;
+- [img2tim](https://github.com/Lameguy64/img2tim), a tool to convert images to PlayStation TIM format (The `img2tim.txt` documentation can be found in `/root/img2tim.txt`).
 
 This project is also heavily inspired by the [psptoolchain](https://github.com/pspdev/psptoolchain).
 
@@ -55,6 +58,31 @@ docker run -it --rm \
 ```
 
 For more info, please refer to ~mkpsxiso~ above.
+
+### Running graphical tools
+
+Some tools are GUI tools for Linux. So you might need extra configuration to give it access to a running X11 session.
+
+Here is an example running ~timedit~:
+
+```bash
+docker run -it --rm \
+    -e DISPLAY=${DISPLAY} \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v ~/.Xauthority:/root/.Xauthority \
+    -v $(pwd):/source \
+    -w /source \
+    --net=host \
+    luksamuk/psxtoolchain:latest \
+    timedit
+```
+
+Remember that, if you need access to your own filesystem, you'll be able to do that through the `/source` directory in this case, which is expected to be your own project dir, so be mindful of where you're running the script above.
+
+Some graphical binaries you may want to use are:
+
+- `timedit`
+- `smxtool`
 
 ## Building the image
 
