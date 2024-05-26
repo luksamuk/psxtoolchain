@@ -1,0 +1,20 @@
+diff --git a/main.cpp b/main.cpp
+index 078e099..16efe0b 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -1383,7 +1383,7 @@ int main(int argc, char** argv)
+ 		#if defined(WIN32)
+ 			user_name = getenv("USERNAME");
+ 		#else
+-			user_name = getenv("USER");
++			user_name = "root";
+ 		#endif
+ 	}
+ 	
+@@ -1411,4 +1411,4 @@ int main(int argc, char** argv)
+ 	FreeImage_DeInitialise();
+ 	
+ 	return ret;	
+-}
+\ No newline at end of file
++}

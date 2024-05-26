@@ -27,10 +27,12 @@ RUN git clone --depth=1 https://github.com/Lameguy64/mkpsxiso &&\
     cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release &&\
     cmake --build ./build
 
-# FROM builder AS timedit
-# RUN git clone --depth=1 https://github.com/alex-free/TIMedit &&\
-#     cd TIMedit &&\
-#     make
+FROM builder AS timedit
+COPY ./timedit.patch /timedit.patch
+RUN git clone --depth=1 https://github.com/alex-free/TIMedit &&\
+    cd TIMedit &&\
+    git apply /timedit.patch &&\
+    make
 
 FROM builder AS smxtool
 RUN git clone --depth=1 https://github.com/Lameguy64/smxtool &&\
@@ -64,7 +66,7 @@ RUN apt clean &&\
 COPY --from=mkpsxiso /mkpsxiso/build/mkpsxiso /usr/local/bin/mkpsxiso
 COPY --from=mkpsxiso /mkpsxiso/build/dumpsxiso /usr/local/bin/dumpsxiso
 COPY --from=armips /armips/build/armips /usr/local/bin/armips
-#COPY --from=timedit /TIMedit/timedit /usr/local/bin/timedit
+COPY --from=timedit /TIMedit/timedit /usr/local/bin/timedit
 COPY --from=smxtool /smxtool/dist/Release-linux/* /usr/local/bin/
 COPY --from=img2tim /img2tim/img2tim /usr/local/bin/img2tim
 COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
