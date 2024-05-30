@@ -21,7 +21,8 @@ This Docker image definition contains:
 - [mkpsxiso](https://github.com/Lameguy64/mkpsxiso), compiled from source;
 - [TIMedit](https://github.com/alex-free/TIMedit), more precisely, a Linux fork (with an extra patch to avoid segfaults), compiled from source;
 - [smxtool](https://github.com/Lameguy64/smxtool), a model viewer and material editor;
-- [img2tim](https://github.com/Lameguy64/img2tim), a tool to convert images to PlayStation TIM format (The `img2tim.txt` documentation can be found in `/root/img2tim.txt`).
+- [img2tim](https://github.com/Lameguy64/img2tim), a tool to convert images to PlayStation TIM format (The `img2tim.txt` documentation can be found in `/root/img2tim.txt`);
+- [psxavenc](https://github.com/WonderfulToolchain/psxavenc), a toom for encoding audio and video into formats commonly used on the original PlayStation.
 
 This project is also heavily inspired by the [psptoolchain](https://github.com/pspdev/psptoolchain).
 

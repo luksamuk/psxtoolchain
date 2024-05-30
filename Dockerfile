@@ -44,6 +44,19 @@ RUN git clone https://github.com/Lameguy64/img2tim &&\
     cd img2tim &&\
     g++ -o img2tim -O2 -Wall main.cpp tim.cpp -lfreeimage
 
+FROM builder AS psxavenc
+RUN apt install -y \
+    meson ninja-build \
+    libavformat-dev \
+    libavcodec-dev \
+    libavutil-dev \
+    libswresample-dev \
+    libswscale-dev
+RUN git clone https://github.com/WonderfulToolchain/psxavenc &&\
+    cd psxavenc &&\
+    meson setup build &&\
+    cd build &&\
+    ninja
 
 FROM base
 RUN apt install -y \
@@ -61,6 +74,12 @@ RUN apt install -y \
     libfltk-gl1.3 \
     libglu1-mesa \
     libglew2.2
+RUN apt install -y \
+    libavformat60 \
+    libavcodec60 \
+    libavutil58 \
+    libswresample4 \
+    libswscale7
 RUN apt clean &&\
     rm -rf /var/lib/apt/lists/*
 COPY --from=mkpsxiso /mkpsxiso/build/mkpsxiso /usr/local/bin/mkpsxiso
@@ -70,6 +89,7 @@ COPY --from=timedit /TIMedit/timedit /usr/local/bin/timedit
 COPY --from=smxtool /smxtool/dist/Release-linux/* /usr/local/bin/
 COPY --from=img2tim /img2tim/img2tim /usr/local/bin/img2tim
 COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
+COPY --from=psxavenc /psxavenc/build/psxavenc /usr/local/bin/psxavenc
 
 
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
