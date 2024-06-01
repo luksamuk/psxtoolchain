@@ -44,7 +44,7 @@ RUN git clone https://github.com/Lameguy64/img2tim &&\
     cd img2tim &&\
     g++ -o img2tim -O2 -Wall main.cpp tim.cpp -lfreeimage
 
-FROM builder AS psxavenc
+FROM builder AS candyk
 RUN apt install -y \
     meson ninja-build \
     libavformat-dev \
@@ -52,11 +52,9 @@ RUN apt install -y \
     libavutil-dev \
     libswresample-dev \
     libswscale-dev
-RUN git clone https://github.com/WonderfulToolchain/psxavenc &&\
-    cd psxavenc &&\
-    meson setup build &&\
-    cd build &&\
-    ninja
+RUN git clone --depth=1 https://github.com/ABelliqueux/candyk-psx &&\
+    cd candyk-psx &&\
+    make bin/psxavenc bin/xainterleave
 
 FROM base
 RUN apt install -y \
@@ -89,7 +87,7 @@ COPY --from=timedit /TIMedit/timedit /usr/local/bin/timedit
 COPY --from=smxtool /smxtool/dist/Release-linux/* /usr/local/bin/
 COPY --from=img2tim /img2tim/img2tim /usr/local/bin/img2tim
 COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
-COPY --from=psxavenc /psxavenc/build/psxavenc /usr/local/bin/psxavenc
-
+COPY --from=candyk /candyk-psx/bin/psxavenc /usr/local/bin/psxavenc
+COPY --from=candyk /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
 
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
