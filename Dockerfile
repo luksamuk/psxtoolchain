@@ -56,6 +56,13 @@ RUN git clone --depth=1 https://github.com/ABelliqueux/candyk-psx &&\
     cd candyk-psx &&\
     make bin/psxavenc bin/xainterleave
 
+FROM builder AS wav2vag
+COPY ./wav2vag.patch /wav2vag.patch
+RUN git clone --depth=1 https://github.com/Aikku93/wav2vag &&\
+    cd wav2vag &&\
+    git apply /wav2vag.patch &&\
+    make
+
 FROM base
 RUN apt install -y \
     git \
@@ -89,5 +96,6 @@ COPY --from=img2tim /img2tim/img2tim /usr/local/bin/img2tim
 COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
 COPY --from=candyk /candyk-psx/bin/psxavenc /usr/local/bin/psxavenc
 COPY --from=candyk /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
+COPY --from=wav2vag /wav2vag/release/wav2vag /usr/local/bin/wav2vag
 
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]

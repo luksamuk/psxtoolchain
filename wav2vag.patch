@@ -1,0 +1,28 @@
+diff --git a/Makefile b/Makefile
+index 56eba52..d8dac44 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,11 +15,11 @@ SRCDIR := . fourier libspectrice
+ #----------------------------#
+ 
+ # Alternatively, try "-march=native" for ARCHFLAGS
+-ARCHCROSS := i686-pc-cygwin-
+-ARCHFLAGS :=
++#ARCHCROSS := i686-pc-cygwin-
++ARCHFLAGS := -march=native
+ 
+ CCFLAGS := $(ARCHFLAGS) -fno-math-errno -O2 -Wall -Wextra $(foreach dir, $(INCDIR), -I$(dir))
+-LDFLAGS := -static
++LDFLAGS := -static -lm
+ 
+ #----------------------------#
+ # Tools
+@@ -34,7 +34,7 @@ LD := $(ARCHCROSS)gcc
+ 
+ SRC := $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+ OBJ := $(addprefix $(OBJDIR)/, $(notdir $(SRC:.c=.o)))
+-EXE := wav2vag.exe # Change this for other platforms
++EXE := wav2vag # Change this for other platforms
+ 
+ VPATH := $(SRCDIR)
+ 
