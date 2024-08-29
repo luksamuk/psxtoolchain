@@ -52,9 +52,18 @@ RUN apt install -y \
     libavutil-dev \
     libswresample-dev \
     libswscale-dev
+
+FROM candyk as psxavenc
+RUN git clone --depth=1 https://github.com/WonderfulToolchain/psxavenc &&\
+    cd psxavenc &&\
+    meson setup build &&\
+    cd build &&\
+    ninja install
+
+FROM candyk as xainterleave
 RUN git clone --depth=1 https://github.com/ABelliqueux/candyk-psx &&\
     cd candyk-psx &&\
-    make bin/psxavenc bin/xainterleave
+    make bin/xainterleave
 
 FROM builder AS wav2vag
 COPY ./wav2vag.patch /wav2vag.patch
@@ -85,6 +94,9 @@ RUN apt install -y \
     libavutil58 \
     libswresample4 \
     libswscale7
+RUN apt install -y \
+    ffmpeg \
+    mencoder
 RUN apt clean &&\
     rm -rf /var/lib/apt/lists/*
 COPY --from=mkpsxiso /mkpsxiso/build/mkpsxiso /usr/local/bin/mkpsxiso
@@ -94,8 +106,8 @@ COPY --from=timedit /TIMedit/timedit /usr/local/bin/timedit
 COPY --from=smxtool /smxtool/dist/Release-linux/* /usr/local/bin/
 COPY --from=img2tim /img2tim/img2tim /usr/local/bin/img2tim
 COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
-COPY --from=candyk /candyk-psx/bin/psxavenc /usr/local/bin/psxavenc
-COPY --from=candyk /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
+COPY --from=psxavenc /psxavenc/build/psxavenc /usr/local/bin/psxavenc
+COPY --from=xainterleave /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
 COPY --from=wav2vag /wav2vag/release/wav2vag /usr/local/bin/wav2vag
 
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
