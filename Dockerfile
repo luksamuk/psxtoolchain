@@ -109,5 +109,6 @@ COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
 COPY --from=psxavenc /psxavenc/build/psxavenc /usr/local/bin/psxavenc
 COPY --from=xainterleave /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
 COPY --from=wav2vag /wav2vag/release/wav2vag /usr/local/bin/wav2vag
+COPY ./gdbinit /root/.config/gdb/gdbinit
 
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]

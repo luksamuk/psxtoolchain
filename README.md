@@ -14,7 +14,7 @@ This Docker image definition contains:
 
 - Ubuntu 24.04 LTS Noble Numbat;
 - A modern GCC-MIPSEL compiler;
-- GDB-Multiarch (if needed);
+- GDB-Multiarch (if needed -- scripts allowed on `/source`);
 - CMake, Make;
 - Git;
 - [armips assembler](https://github.com/Kingcom/armips), compiled from source;
