@@ -5,6 +5,8 @@ FROM base AS builder
 WORKDIR /
 RUN apt install -y \
     git \
+    curl \
+    7zip \
     build-essential \
     cmake \
     libfltk1.3-dev \
@@ -72,7 +74,15 @@ RUN git clone --depth=1 https://github.com/Aikku93/wav2vag &&\
     git apply /wav2vag.patch &&\
     make
 
-FROM base
+FROM builder AS psn00bsdk
+ARG PSN00BSDK_URL=https://github.com/Lameguy64/PSn00bSDK/releases/download/v0.24/gcc-mipsel-none-elf-12.3.0-linux.zip
+RUN mkdir -p /psn00bsdk &&\
+    cd /psn00bsdk &&\
+    curl -L ${PSN00BSDK_URL} -o "psn00bsdk.zip" &&\
+    7z x "psn00bsdk.zip" &&\
+    rm "psn00bsdk.zip"
+
+FROM base AS final
 RUN apt install -y \
     git \
     cmake \
@@ -97,6 +107,8 @@ RUN apt install -y \
 RUN apt install -y \
     ffmpeg \
     mencoder
+
+
 RUN apt clean &&\
     rm -rf /var/lib/apt/lists/*
 COPY --from=mkpsxiso /mkpsxiso/build/mkpsxiso /usr/local/bin/mkpsxiso
@@ -109,6 +121,11 @@ COPY --from=img2tim /img2tim/img2tim.txt /root/img2tim.txt
 COPY --from=psxavenc /psxavenc/build/psxavenc /usr/local/bin/psxavenc
 COPY --from=xainterleave /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
 COPY --from=wav2vag /wav2vag/release/wav2vag /usr/local/bin/wav2vag
+COPY --from=psn00bsdk /psn00bsdk/ /opt/psn00bsdk/
 COPY ./gdbinit /root/.config/gdb/gdbinit
+
+ENV PATH           /opt/psn00bsdk/bin:${PATH}
+ENV PSN00BSDK_LIBS /opt/psn00bsdk/lib/libpsn00b
+
 
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]

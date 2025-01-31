@@ -6,6 +6,8 @@ PlayStation 1 (PSX) Docker toolchain for building projects and ISO images
 
 This repository contains the Dockerfile and instructions for building your own PlayStation games as ISO files.
 
+This image **also supports PSn00bSDK**.
+
 I created this because I felt like the toolchain was somewhat directed to Windows users. I prefer doing things on Linux, or even, if I were using Windows, I'd still use WSL to develop my games.
 
 Please notice that **I am also not redistributing anything here that may cause copyright infringiment**. This image is composed of opensource software that can be freely installed on a Linux system with no extra effort, plus a few opensource projects that can be compiled from source with no problems. So you might need extra files for building your ISO, for example, which cannot be obtained on this Docker image.
@@ -13,7 +15,8 @@ Please notice that **I am also not redistributing anything here that may cause c
 This Docker image definition contains:
 
 - Ubuntu 24.04 LTS Noble Numbat;
-- A modern GCC-MIPSEL compiler;
+- A modern GCC-MIPSEL compiler (`mipsel-linux-gnu-gcc` GCC 12.3.0);
+- PSn00bSDK toolchain and libraries (`mipsel-none-elf-gcc` GCC 12.3.0 and everything under `/opt/psn00bsdk`);
 - GDB-Multiarch (if needed -- scripts allowed on `/source`);
 - CMake, Make;
 - Git;
@@ -31,9 +34,18 @@ This project is also heavily inspired by the [psptoolchain](https://github.com/p
 ## Requirements
 
 If anything, you'll need Docker installed and nothing else.
-I also expect you to be using the PsyQ + Nugget toolchain or something similar, as long as it can be compiled with a modern GNU C Compiler for MIPS.
+
+### If you're using PsyQ + Nugget or similar...
+
+A PsyQ + Nugget project can be compiled with a modern GNU C Compiler for MIPS, most notably, using the toolchain under `mipsel-linux-gnu-*` present on PATH.
 
 You can easily generate a project by using the [PSX.Dev extension for VSCode](https://marketplace.visualstudio.com/items?itemName=Grumpycoders.psx-dev).
+
+### If you're using PSn00bSDK...
+
+This image already exports environment variables that are needed when compiling a project with PSn00bSDK.
+
+Please refer to [PSn00bSDK's Installation Guide](https://github.com/Lameguy64/PSn00bSDK/blob/master/doc/installation.md) for more information.
 
 ## How to use
 
