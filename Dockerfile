@@ -75,12 +75,12 @@ RUN git clone --depth=1 https://github.com/Aikku93/wav2vag &&\
     make
 
 FROM builder AS psn00bsdk
-ARG PSN00BSDK_URL=https://github.com/Lameguy64/PSn00bSDK/releases/download/v0.24/gcc-mipsel-none-elf-12.3.0-linux.zip
-RUN mkdir -p /psn00bsdk &&\
-    cd /psn00bsdk &&\
-    curl -L ${PSN00BSDK_URL} -o "psn00bsdk.zip" &&\
+ARG PSN00BSDK_URL=https://github.com/Lameguy64/PSn00bSDK/releases/download/v0.24/PSn00bSDK-0.24-Linux.zip
+RUN curl -L ${PSN00BSDK_URL} -o "psn00bsdk.zip" &&\
     7z x "psn00bsdk.zip" &&\
-    rm "psn00bsdk.zip"
+    rm "psn00bsdk.zip" &&\
+    find . -name "PSn00bSDK-*-Linux" | xargs -I {} mv {} "/psn00bsdk"
+
 
 FROM base AS final
 RUN apt install -y \
