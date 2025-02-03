@@ -81,6 +81,10 @@ RUN curl -L ${PSN00BSDK_URL} -o "psn00bsdk.zip" &&\
     rm "psn00bsdk.zip" &&\
     find . -name "PSn00bSDK-*-Linux" | xargs -I {} mv {} "/psn00bsdk"
 
+FROM builder AS tochd
+RUN git clone --depth=1 https://github.com/thingsiplay/tochd &&\
+    chmod +x tochd/tochd.py
+    
 
 FROM base AS final
 RUN apt install -y \
@@ -107,7 +111,10 @@ RUN apt install -y \
 RUN apt install -y \
     ffmpeg \
     mencoder
-
+RUN apt install -y \
+    7zip \
+    mame-tools \
+    python3
 
 RUN apt clean &&\
     rm -rf /var/lib/apt/lists/*
@@ -122,6 +129,7 @@ COPY --from=psxavenc /psxavenc/build/psxavenc /usr/local/bin/psxavenc
 COPY --from=xainterleave /candyk-psx/bin/xainterleave /usr/local/bin/xainterleave
 COPY --from=wav2vag /wav2vag/release/wav2vag /usr/local/bin/wav2vag
 COPY --from=psn00bsdk /psn00bsdk/ /opt/psn00bsdk/
+COPY --from=tochd /tochd/tochd.py /usr/local/bin/tochd
 COPY ./gdbinit /root/.config/gdb/gdbinit
 
 ENV PATH           /opt/psn00bsdk/bin:${PATH}

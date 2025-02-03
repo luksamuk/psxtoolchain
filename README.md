@@ -27,7 +27,8 @@ This Docker image definition contains:
 - [img2tim](https://github.com/Lameguy64/img2tim), a tool to convert images to PlayStation TIM format (The `img2tim.txt` documentation can be found in `/root/img2tim.txt`);
 - `psxavenc` from [WonderfulToolchain](https://github.com/WonderfulToolchain/psxavenc)
 - `xainterleave` from [CandyK-PSX](https://github.com/ABelliqueux/candyk-psx) SDK;
-- [wav2vag](https://github.com/Aikku93/wav2vag), a WAV to VAG (4-bit ADPCM compressed PSX sound format) converter.
+- [wav2vag](https://github.com/Aikku93/wav2vag), a WAV to VAG (4-bit ADPCM compressed PSX sound format) converter;
+- [tochd](https://github.com/thingsiplay/tochd), a tool which converts ISO/BIN/CUE formats to a single CHD format file.
 
 This project is also heavily inspired by the [psptoolchain](https://github.com/pspdev/psptoolchain).
 
